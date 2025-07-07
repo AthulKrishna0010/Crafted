@@ -9,6 +9,7 @@ export default function AboutSection() {
         className={`${markazi.className} text-5xl font-bold mb-4`}
         whileInView={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: 50 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
       >
         Why Choose Us?
       </motion.h2>

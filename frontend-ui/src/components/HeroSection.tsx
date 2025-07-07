@@ -10,8 +10,10 @@ export default function HeroSection() {
     >
       {/* Background image */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/background.jpg')" }}
+        className="absolute inset-0 bg-cover bg-center
+    bg-[url('/background-mobile.jpg')] 
+    md:bg-[url('/background.jpg')]"
+        
       />
 
       {/* Gradient overlay */}
