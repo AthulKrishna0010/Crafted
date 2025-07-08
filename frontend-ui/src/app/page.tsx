@@ -12,7 +12,7 @@ const ServiceSection = dynamic(() => import("@/components/ServiceSection"), { ss
 const ProcessSection = dynamic(() => import("@/components/ProcessSection"), { ssr: false });
 const TestimonialSection = dynamic(() => import("@/components/TestimonialSection"), { ssr: false });
 const ContactSection = dynamic(() => import("@/components/ContactSection"), { ssr: false });
-const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
+
 
 export default function Home() {
   return (
@@ -24,7 +24,7 @@ export default function Home() {
       <ProcessSection />
       <TestimonialSection />
       <ContactSection />
-      <Footer />
+      
     </>
   );
 }

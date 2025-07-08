@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { karla, rubik80s, tektur } from "@/fonts";
+import { karla, tektur } from "@/fonts";
 
 export default function HeroSection() {
   return (
@@ -22,34 +22,7 @@ export default function HeroSection() {
       {/* Transparent black overlay */}
       <div className="absolute inset-0 bg-black/40" />
 
-      {/* Navbar */}
-      <nav className="absolute top-0 left-0 w-full flex flex-col md:flex-row justify-center md:justify-between items-center px-4 py-4 bg-black/0 backdrop-blur-sm z-20 space-y-2 md:space-y-0">
-  <div
-    className={`${rubik80s.className} text-3xl font-bold tracking-wider drop-shadow`}
-  >
-    CR4FTED
-  </div>
-
-  <ul
-    className={`${karla.className} text-lg flex flex-row justify-center space-x-6`}
-  >
-    <li>
-      <a href="#about" className="hover:underline">
-        About
-      </a>
-    </li>
-    <li>
-      <a href="#services" className="hover:underline">
-        Services
-      </a>
-    </li>
-    <li>
-      <a href="#contact" className="hover:underline">
-        Contact
-      </a>
-    </li>
-  </ul>
-</nav>
+      
 
       {/* Hero Content */}
       <div className="relative z-10">
