@@ -70,7 +70,7 @@ export default function ServicesPage() {
           transition={{ duration: 0.8 }}
         >
           <h1
-            className={`${markazi.className} text-5xl mb-4 drop-shadow`}
+            className={`${markazi.className} text-5xl mb-4 drop-shadow pt-20`}
           >
             Our Services
           </h1>
