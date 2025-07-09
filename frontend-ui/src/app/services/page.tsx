@@ -1,10 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { karla, markazi,  tektur } from "@/fonts";
+import { karla, markazi, tektur } from "@/fonts";
+import { useEffect, useState } from "react";
 
 const services = [
   {
+    id: "lite",
     title: "Crafted Lite",
     price: "₹5,000+",
     description: "A clean, simple online presence to showcase your work.",
@@ -18,6 +20,7 @@ const services = [
     ],
   },
   {
+    id: "plus",
     title: "Crafted Plus",
     price: "₹12,000+",
     description: "Sell your products with a professional online store.",
@@ -31,6 +34,7 @@ const services = [
     ],
   },
   {
+    id: "premium",
     title: "Crafted Premium",
     price: "₹20,000+",
     description: "For businesses that need scalability & advanced features.",
@@ -46,23 +50,27 @@ const services = [
 ];
 
 export default function ServicesPage() {
+  const [highlight, setHighlight] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash.replace("#", "");
+      setHighlight(hash);
+    }
+  }, []);
+
   return (
     <main>
       {/* Hero Section */}
       <section className="relative h-[50vh] flex flex-col justify-center items-center text-center px-4 overflow-hidden">
-        {/* Background image */}
         <motion.div
-          className="absolute inset-0 bg-cover bg-center bg-[url('/background-mobile.jpg')] 
-    md:bg-[url('/background.jpg')]"
-          
+          className="absolute inset-0 bg-cover bg-center bg-[url('/background-mobile.jpg')] md:bg-[url('/background.jpg')]"
           initial={{ scale: 1.2, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1 }}
         />
-        {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/50" />
-        
-        {/* Hero content */}
+
         <motion.div
           className="relative z-10 text-white"
           initial={{ opacity: 0, y: 30 }}
@@ -77,7 +85,8 @@ export default function ServicesPage() {
           <p
             className={`${tektur.className} text-2xl font-bold max-w-2xl mx-auto text-gray-200`}
           >
-            Choose a plan that matches your needs. Upgrade any time as your business grows.
+            Choose a plan that matches your needs. Upgrade any time as your
+            business grows.
           </p>
         </motion.div>
       </section>
@@ -87,17 +96,28 @@ export default function ServicesPage() {
         <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
           {services.map((service, index) => (
             <motion.div
+              id={service.id}
               key={service.title}
               className="bg-white/5 rounded-xl border border-gray-700 p-6 flex flex-col justify-between shadow-lg hover:shadow-xl transition-shadow duration-300"
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{
+                opacity: 0,
+                y: 50,
+                scale: highlight === service.id ? 1.1 : 1,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                boxShadow:
+                  highlight === service.id
+                    ? "0 0 30px rgba(0, 150, 255, 0.5)"
+                    : "none",
+              }}
               viewport={{ once: false, amount: 0.2 }}
-              transition={{ delay: index * 0.2, duration: 0.5 }}
+              transition={{ delay: index * 0.2, duration: 0.6 }}
             >
               <div>
-                <h2
-                  className={`${karla.className} text-2xl font-semibold mb-2`}
-                >
+                <h2 className={`${karla.className} text-2xl font-semibold mb-2`}>
                   {service.title}
                 </h2>
                 <div className="text-3xl font-bold mb-4 text-blue-400">

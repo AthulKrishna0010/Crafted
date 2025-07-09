@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import { karla, tektur } from "@/fonts";
+import { useRouter } from "next/navigation"; 
 
 export default function HeroSection() {
+  const router = useRouter(); 
   return (
     <section
       className="h-screen flex flex-col justify-center items-center text-white text-center px-4 relative overflow-hidden"
@@ -47,6 +49,7 @@ export default function HeroSection() {
         <motion.button
           className={`${karla.className} mt-6 bg-white text-black font-extrabold py-2 px-4 rounded shadow `}
           whileHover={{ scale: 1.1 }}
+          onClick={() => router.push("/questions")}
         >
           Get a Free Quote
         </motion.button>
