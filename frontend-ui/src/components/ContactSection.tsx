@@ -11,6 +11,7 @@ export default function ContactSection() {
     phone: "",
     budget: "",
     projectType: "",
+    plan: "",
     message: "",
   });
 
@@ -21,20 +22,21 @@ export default function ContactSection() {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
-  try {
-    console.log(formData);
+    e.preventDefault();
 
     if (!formData.name || !formData.email) {
-      throw new Error("Name and Email are required");
+      console.error("Name and Email are required");
+      return;
     }
 
-    // …submit to API here
-  } catch (err) {
-    console.error("Submission error:", err);
-  }
-};
+    if (formData.projectType === "Other" && !formData.message) {
+      console.error("Message is required when project type is Other");
+      return;
+    }
 
+    console.log("Form data submitted:", formData);
+    // …submit to API here
+  };
 
   return (
     <section
@@ -96,41 +98,69 @@ export default function ContactSection() {
             placeholder="Budget (Optional)"
           />
 
-          <select
-            name="projectType"
-            value={formData.projectType}
-            onChange={handleChange}
-            className="w-full border p-2 rounded text-white bg-black border-white appearance-none"
-          >
-            <option className="bg-black text-white" value="">
-              Select Project Type
-            </option>
-            <option className="bg-black text-white" value="Website">
-              Website
-            </option>
-            <option className="bg-black text-white" value="E-commerce">
-              E-commerce
-            </option>
-            <option className="bg-black text-white" value="Portfolio">
-              Portfolio
-            </option>
-            <option className="bg-black text-white" value="Other">
-              Other
-            </option>
-          </select>
-
-
-          {/* Show textarea only if 'Other' is selected */}
-          {formData.projectType === "Other" && (
-            <textarea
-              name="message"
-              value={formData.message}
+          <div className="relative">
+            <select
+              name="projectType"
+              value={formData.projectType}
               onChange={handleChange}
-              className="w-full border p-2 rounded"
-              placeholder="Please describe your project"
-              rows={4}
-            />
-          )}
+              className="w-full border p-2 rounded text-white bg-black border-white appearance-none"
+            >
+              <option value="">Select Project Type</option>
+              <option value="Website">Website</option>
+              <option value="E-commerce">E-commerce</option>
+              <option value="Portfolio">Portfolio</option>
+              <option value="Other">Other</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+              ▼
+            </div>
+          </div>
+
+
+          <div className="w-full space-y-1">
+            <div className="relative flex flex-col sm:flex-row sm:items-center gap-2">
+              
+                <select
+                  name="plan"
+                  value={formData.plan}
+                  onChange={handleChange}
+                  className="flex-1 border p-2 rounded text-white bg-black border-white appearance-none"
+                >
+                  <option value="">Preferred Plan</option>
+                  <option value="Crafted Lite">Crafted Lite</option>
+                  <option value="Crafted Plus">Crafted Plus</option>
+                  <option value="Crafted Premium">Crafted Premium</option>
+                  <option value="Not Yet Decided">Not Yet Decided</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+                  ▼
+                
+              </div>
+            </div>
+          </div>
+
+          <p className="text-sm text-gray-400 mt-1">
+            Not sure?{" "}
+            <a href="/services" className="underline hover:text-white">
+              Check our Services page
+            </a>
+            .
+          </p>
+
+
+
+          <textarea
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+            placeholder={
+              formData.projectType === "Other"
+                ? "Please describe your project (required for Other)"
+                : "Additional details (optional)"
+            }
+            rows={4}
+          />
 
           <motion.button
             whileHover={{ scale: 1.05 }}

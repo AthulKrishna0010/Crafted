@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { karla, markazi, tektur } from "@/fonts";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const services = [
   {
@@ -140,12 +141,14 @@ export default function ServicesPage() {
                   ))}
                 </ul>
               </div>
+              <Link href="/contact">
               <motion.button
                 className={`${karla.className} mt-6 bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition`}
                 whileHover={{ scale: 1.05 }}
               >
                 Request Quote
               </motion.button>
+              </Link>
             </motion.div>
           ))}
         </div>
