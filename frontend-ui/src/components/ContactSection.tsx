@@ -44,7 +44,7 @@ export default function ContactSection() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/contact", {
+      const res = await fetch("https://crafted-t0q4.onrender.com/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,10 +66,16 @@ export default function ContactSection() {
         plan: "",
         message: "",
       });
-    } catch (err: any) {
-      console.error(err);
-      setError(err.message || "Something went wrong.");
-    } finally {
+    } catch (err: unknown) {
+  if (err instanceof Error) {
+    console.error(err.message);
+    setError(err.message || "An error occurred. Please try again.");
+  } else {
+    console.error(err);
+    setError("An unexpected error occurred.");
+  }
+}
+ finally {
       setLoading(false);
     }
   };

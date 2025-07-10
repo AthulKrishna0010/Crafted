@@ -44,7 +44,7 @@ export default function ContactPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/contact", {
+      const res = await fetch("https://crafted-t0q4.onrender.com/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,10 +65,16 @@ export default function ContactPage() {
         plan: "",
         message: "",
       });
-    } catch (err: any) {
-      console.error(err);
-      setError(err.message || "An error occurred. Please try again.");
-    } finally {
+    } catch (err: unknown) {
+  if (err instanceof Error) {
+    console.error(err.message);
+    setError(err.message || "An error occurred. Please try again.");
+  } else {
+    console.error(err);
+    setError("An unexpected error occurred.");
+  }
+}
+ finally {
       setLoading(false);
     }
   };
@@ -198,7 +204,7 @@ export default function ContactPage() {
                 <p className={`${karla.className} text-red-500 text-md mb-2`}>{error}</p>
               )}
               {success && (
-                <p className={`${karla.className} text-green-500 text-md mb-2`}>{success}</p>
+                <p className={`${karla.className} text-[#006D2c] text-md mb-2`}>{success}</p>
               )}
 
               <motion.button
