@@ -9,11 +9,15 @@ export default function ContactSection() {
     name: "",
     email: "",
     phone: "",
-    budget: "",
+    
     projectType: "",
     plan: "",
     message: "",
   });
+
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -21,21 +25,53 @@ export default function ContactSection() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setError("");
+    setSuccess("");
+
     if (!formData.name || !formData.email) {
-      console.error("Name and Email are required");
+      setError("Name and Email are required.");
       return;
     }
 
-    if (formData.projectType === "Other" && !formData.message) {
-      console.error("Message is required when project type is Other");
+    if (formData.projectType === "Other" && !formData.message.trim()) {
+      setError("Message is required when Project Type is 'Other'.");
       return;
     }
 
-    console.log("Form data submitted:", formData);
-    // …submit to API here
+    setLoading(true);
+
+    try {
+      const res = await fetch("http://localhost:5000/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to send message.");
+      }
+
+      setSuccess("Your message was sent successfully! We’ll be in touch.");
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        
+        projectType: "",
+        plan: "",
+        message: "",
+      });
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -90,13 +126,7 @@ export default function ContactSection() {
             placeholder="WhatsApp Number (Optional)"
             type="tel"
           />
-          <input
-            name="budget"
-            value={formData.budget}
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-            placeholder="Budget (Optional)"
-          />
+          
 
           <div className="relative">
             <select
@@ -116,25 +146,22 @@ export default function ContactSection() {
             </div>
           </div>
 
-
           <div className="w-full space-y-1">
             <div className="relative flex flex-col sm:flex-row sm:items-center gap-2">
-              
-                <select
-                  name="plan"
-                  value={formData.plan}
-                  onChange={handleChange}
-                  className="flex-1 border p-2 rounded text-white bg-black border-white appearance-none"
-                >
-                  <option value="">Preferred Plan</option>
-                  <option value="Crafted Lite">Crafted Lite</option>
-                  <option value="Crafted Plus">Crafted Plus</option>
-                  <option value="Crafted Premium">Crafted Premium</option>
-                  <option value="Not Yet Decided">Not Yet Decided</option>
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
-                  ▼
-                
+              <select
+                name="plan"
+                value={formData.plan}
+                onChange={handleChange}
+                className="flex-1 border p-2 rounded text-white bg-black border-white appearance-none"
+              >
+                <option value="">Preferred Plan</option>
+                <option value="Crafted Lite">Crafted Lite</option>
+                <option value="Crafted Plus">Crafted Plus</option>
+                <option value="Crafted Premium">Crafted Premium</option>
+                <option value="Not Yet Decided">Not Yet Decided</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+                ▼
               </div>
             </div>
           </div>
@@ -146,8 +173,6 @@ export default function ContactSection() {
             </a>
             .
           </p>
-
-
 
           <textarea
             name="message"
@@ -162,13 +187,21 @@ export default function ContactSection() {
             rows={4}
           />
 
+          {error && (
+            <p className={`${karla.className} text-red-500 text-sm mb-2`}>{error}</p>
+          )}
+          {success && (
+            <p className={`${karla.className} text-green-500 text-md mb-2`}>{success}</p>
+          )}
+
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-white text-black py-2 px-4 rounded w-full font-bold"
+            disabled={loading}
+            className="bg-white text-black py-2 px-4 rounded w-full font-bold disabled:opacity-50"
             type="submit"
           >
-            Send
+            {loading ? "Sending..." : "Send"}
           </motion.button>
         </motion.form>
       </div>
