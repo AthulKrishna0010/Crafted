@@ -1,38 +1,31 @@
 require("dotenv").config();
 const express = require("express");
-const nodemailer = require("nodemailer");
 const cors = require("cors");
+const sgMail = require("@sendgrid/mail");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Setup transporter with your environment variables
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+// Set your SendGrid API key
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 app.post("/contact", async (req, res) => {
   const { name, email, phone, projectType, plan, message } = req.body;
 
-  // Validate required fields
   if (!name || !email) {
     return res.status(400).json({ error: "Name and Email are required" });
   }
 
   if (projectType === "Other" && (!message || !message.trim())) {
-    return res.status(400).json({ error: "Message is required for 'Other' project type" });
+    return res
+      .status(400)
+      .json({ error: "Message is required for 'Other' project type" });
   }
 
-  const mailOptions = {
-    from: `"Website Contact Form" <${process.env.EMAIL_USER}>`,
-    to: process.env.TO_EMAIL,
+  const msg = {
+    to: process.env.TO_EMAIL, // your verified sender or recipient
+    from: process.env.TO_EMAIL, // your verified sender (must match what you verified in SendGrid)
     subject: `New Contact Form Submission from ${name}`,
     html: `
       <h2>Contact Details</h2>
@@ -46,7 +39,7 @@ app.post("/contact", async (req, res) => {
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    await sgMail.send(msg);
     res.json({ message: "Email sent successfully!" });
   } catch (err) {
     console.error("Error sending email:", err);
