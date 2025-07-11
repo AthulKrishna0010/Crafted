@@ -56,7 +56,7 @@ export default function Footer() {
 
         {/* Right: Email */}
         <div className={`${karla.className} text-lg text-gray-300`}>
-          cr4fteddsigns@gmail.com
+          contact@craftedhq.in
         </div>
       </div>
     </footer>

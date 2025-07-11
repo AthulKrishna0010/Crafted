@@ -44,7 +44,7 @@ export default function ContactPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("https://crafted-t0q4.onrender.com/contact", {
+      const res = await fetch("https://crafted-cqso.onrender.com/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
